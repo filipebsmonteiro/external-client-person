@@ -8,8 +8,8 @@
     error-color="#e74a3b"
     @on-complete="() => {alert('COMPLETE')}"
   >
-    <template v-slot:title>
-      <img src="~/assets/img/veusinho.png" width="100" />
+    <template #title>
+      <img src="~/assets/img/veusinho.png" width="100" alt="">
     </template>
     <tab-content title="Dados Pessoais" :before-change="validateFirstTab">
       <form-group-float-label v-model="model.name" label="Nome Completo" input-name="name" mandatory />
@@ -53,6 +53,10 @@ export default {
       }
     }
   },
+  mounted () {
+    // eslint-disable-next-line no-console
+    console.log('this.$el.clientWidth', this.$el.clientWidth)
+  },
   methods: {
     validate (firstField, secondField) {
       return new Promise((resolve, reject) => {
@@ -64,6 +68,8 @@ export default {
       })
     },
     validateFirstTab () {
+      // eslint-disable-next-line no-console
+      console.log(this.validate('name', 'cpf'))
       return this.validate('name', 'cpf')
     },
     validateSecondTab () {
@@ -72,10 +78,6 @@ export default {
     validateThirdTab () {
       return this.validate('phone', 'password')
     }
-  },
-  mounted () {
-    // eslint-disable-next-line no-console
-    console.log('this.$el.clientWidth', this.$el.clientWidth)
   }
 }
 </script>
