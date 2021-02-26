@@ -3,30 +3,30 @@
     class="container"
     back-button-text="Anterior"
     next-button-text="Próximo"
-    finish-button-text="Salvar"
+    finish-button-text="Enviar"
     color="#f9b112"
     error-color="#e74a3b"
     @on-complete="() => {alert('COMPLETE')}"
   >
     <template #title>
-      <img src="~/assets/img/veusinho.png" width="100" alt="">
+      <div class="d-flex jusfity-content-between align-items-center">
+        <img src="~/assets/img/veusinho.png" alt="" class="logo">
+        <h2 class="flex-fill text-gray">
+          Cadastro
+        </h2>
+        <NuxtLink to="/" class="btn btn-outline-warning">
+          <b-icon icon="arrow-left" />
+        </NuxtLink>
+      </div>
     </template>
-    <tab-content title="Dados Pessoais" :before-change="validateFirstTab">
+
+    <tab-content title="Verificação" :before-change="validateFirstTab">
       <form-group-float-label v-model="model.cpf" label="CPF" input-name="cpf" mandatory />
-      <form-group-float-label v-model="model.name" label="Nome Completo" input-name="name" mandatory />
     </tab-content>
-    <tab-content title="Contato" :before-change="validateThirdTab">
+    <tab-content title="Dados Pessoais" :before-change="validateSecondTab">
+      <form-group-float-label v-model="model.name" label="Nome Completo" input-name="name" mandatory />
       <form-group-float-label v-model="model.email" label="Email" input-name="email" mandatory />
       <form-group-float-label v-model="model.phone" label="Telefone" input-name="phone" mandatory />
-      <form-group-float-label
-        v-model="model.CEP"
-        label="CEP"
-        input-name="CEP"
-        mandatory
-      />
-    </tab-content>
-    <tab-content title="Informações adicionais" :before-change="validateSecondTab">
-      <h3>Confirme seus dados</h3>
       <form-group-float-label v-model="model.gender" label="Sexo" input-name="gender" mandatory />
       <form-group-float-label
         v-model="model.birthday"
@@ -35,6 +35,30 @@
         input-type="date"
         mandatory
       />
+      <form-group-float-label v-model="model.CEP" label="CEP" input-name="CEP" mandatory />
+    </tab-content>
+    <tab-content title="Documentos" :before-change="validateThirdTab">
+      <b-form-group label="Pedido(s) de exame">
+        <b-form-file
+          placeholder="Escolha arquivo ou Solte aqui"
+          drop-placeholder="Solte aqui"
+          accept="image/x-png,image/gif,image/jpeg"
+        />
+      </b-form-group>
+      <b-form-group label="Carteirinha do plano de saúde" class="mt-5">
+        <b-form-file
+          placeholder="Escolha arquivo ou Solte aqui"
+          drop-placeholder="Solte aqui"
+          accept="image/x-png,image/gif,image/jpeg"
+        />
+      </b-form-group>
+      <b-form-group label="Identidade" class="mt-5">
+        <b-form-file
+          placeholder="Escolha arquivo ou Solte aqui"
+          drop-placeholder="Solte aqui"
+          accept="image/x-png,image/gif,image/jpeg"
+        />
+      </b-form-group>
     </tab-content>
   </form-wizard>
 </template>
@@ -47,10 +71,11 @@ export default {
   data () {
     return {
       model: {
+        cpf: null,
         name: null,
         email: null,
-        cpf: null,
         phone: null,
+        gender: null,
         birthday: null,
         CEP: null
       }
@@ -63,17 +88,10 @@ export default {
   methods: {
     validate (fieldsToValidate) {
       return new Promise((resolve, reject) => {
-        const errorFields = Object.keys(fieldsToValidate).map((field) => {
-          console.log(field)
-          console.log(this.model[field])
-          console.log(!this.model[field])
-          if (!this.model[field]) {
-            this.$snotify.error(`Campo ${fieldsToValidate[field]} obrigatório!`)
-          }
-          return null
-        })
+        const errorFields = Object.keys(fieldsToValidate).filter(field => !this.model[field])
 
         if (errorFields.length > 0) {
+          errorFields.map(field => this.$snotify.error(`Campo ${fieldsToValidate[field]} obrigatório!`))
           this.reject('Campos Inválidos')
         }
 
@@ -81,16 +99,17 @@ export default {
       })
     },
     validateFirstTab () {
-      // eslint-disable-next-line no-console
-      // console.log(this.validate('name', 'cpf'))
-      return this.validate({
-        name: 'Nome',
-        cpf: 'CPF'
-      })
+      return this.validate({ cpf: 'CPF' })
     },
     validateSecondTab () {
-      // return this.validate('gender', 'birthday')
-      // return this.validate('email', 'phone', 'CEP')
+      return this.validate({
+        CEP: 'CEP',
+        birthday: 'Data de Nascimento',
+        gender: 'Sexo',
+        phone: 'Telefone',
+        email: 'Email',
+        name: 'Nome'
+      })
     },
     validateThirdTab () {
       // return this.validate('phone', 'password')
@@ -138,5 +157,19 @@ export default {
 .label-float{
   margin-top: 40px;
   margin-bottom: 40px;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    transform: translateX(160%) scale(2) translateY(25%);// translate(+50%);
+  }
+  100% {
+    transform: translateX(0);// translate(+25%, +25%) scale(1);
+  }
+}
+
+::v-deep.logo {
+  width: 50px;
+  animation: 1s ease-out 0s 1 slideInFromLeft;
 }
 </style>
