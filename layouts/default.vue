@@ -1,5 +1,6 @@
 <template>
   <div>
+    <vue-snotify></vue-snotify>
     <Nuxt />
   </div>
 </template>

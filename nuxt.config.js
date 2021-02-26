@@ -25,7 +25,8 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/vue-form-wizard.js'
+    '~/plugins/vue-form-wizard.js',
+    '~/plugins/snotify.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

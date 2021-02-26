@@ -11,12 +11,14 @@
     "lint": "npm run lint:js"
   },
   "dependencies": {
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.8.3",
     "nuxt": "^2.14.12",
     "tesseract.js": "^2.1.4",
-    "vue-form-wizard": "^0.8.4"
+    "vue-form-wizard": "^0.8.4",
+    "vue-snotify": "^3.2.1"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^5.0.0",
